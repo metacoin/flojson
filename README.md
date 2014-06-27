@@ -1,26 +1,19 @@
-btcjson
+flojson
 =======
 
-[![Build Status](https://travis-ci.org/conformal/btcjson.png?branch=master)]
-(https://travis-ci.org/conformal/btcjson)
+Package flojson implements the Florincoin JSON-RPC API.  
+This is a fork of btcjson by Conformal.
+Package flojson and btcjson are licensed under the liberal ISC license.
 
-Package btcjson implements the bitcoin JSON-RPC API.  There is a test
-suite which is aiming to reach 100% code coverage.  See
-`test_coverage.txt` for the current coverage (using gocov).  On a
-UNIX-like OS, the script `cov_report.sh` can be used to generate the
-report.  Package btcjson is licensed under the liberal ISC license.
-
-This package is one of the core packages from btcd, an alternative full-node
+The original package btcjson is one of the core packages from btcd, an alternative full-node
 implementation of bitcoin which is under active development by Conformal.
 Although it was primarily written for btcd, this package has intentionally been
 designed so it can be used as a standalone package for any projects needing to
 communicate with a bitcoin client using the json rpc interface.
-[BlockSafari](http://blocksafari.com) is one such program that uses
-btcjson to communicate with btcd (or bitcoind to help test btcd).
 
 ## JSON RPC
 
-Bitcoin provides an extensive API call list to control bitcoind or
+Bitcoin and its desecndants provide an extensive API call list to control bitcoind or
 bitcoin-qt through json-rpc.  These can be used to get information
 from the client or to cause the client to perform some action.
 
