@@ -5569,6 +5569,7 @@ type SendToAddressCmd struct {
 	Amount    int64
 	Comment   string
 	CommentTo string
+	TxComment string
 }
 
 // Enforce that SendToAddressCmd satisifies the Cmd interface.
@@ -5579,8 +5580,9 @@ var _ Cmd = &SendToAddressCmd{}
 func NewSendToAddressCmd(id interface{}, address string, amount int64, optArgs ...interface{}) (*SendToAddressCmd, error) {
 	comment := ""
 	commentto := ""
+	txcomment := ""
 
-	if len(optArgs) > 2 {
+	if len(optArgs) > 3 {
 		return nil, ErrWrongNumberOfParams
 	}
 
@@ -5598,6 +5600,13 @@ func NewSendToAddressCmd(id interface{}, address string, amount int64, optArgs .
 		}
 		commentto = cto
 	}
+	if len(optArgs) > 2 {
+		txc, ok := optArgs[2].(string)
+		if !ok {
+			return nil, errors.New("third optional parameter txcomment is not a string")
+		}
+		txcomment = txc
+	}
 
 	return &SendToAddressCmd{
 		id:        id,
@@ -5605,6 +5614,7 @@ func NewSendToAddressCmd(id interface{}, address string, amount int64, optArgs .
 		Amount:    amount,
 		Comment:   comment,
 		CommentTo: commentto,
+		TxComment: txcomment,
 	}, nil
 }
 
@@ -5629,6 +5639,9 @@ func (cmd *SendToAddressCmd) MarshalJSON() ([]byte, error) {
 	if cmd.CommentTo != "" {
 		params = append(params, cmd.CommentTo)
 	}
+	if cmd.TxComment != "" {
+		params = append(params, cmd.TxComment)
+	}
 
 	// Fill and marshal a RawCmd.
 	raw, err := NewRawCmd(cmd.id, cmd.Method(), params)
@@ -5647,7 +5660,7 @@ func (cmd *SendToAddressCmd) UnmarshalJSON(b []byte) error {
 		return err
 	}
 
-	if len(r.Params) > 4 || len(r.Params) < 2 {
+	if len(r.Params) > 5 || len(r.Params) < 2 {
 		return ErrWrongNumberOfParams
 	}
 
@@ -5665,20 +5678,27 @@ func (cmd *SendToAddressCmd) UnmarshalJSON(b []byte) error {
 		return err
 	}
 
-	optArgs := make([]interface{}, 0, 2)
+	optArgs := make([]interface{}, 0, 3)
 	if len(r.Params) > 2 {
 		var comment string
 		if err := json.Unmarshal(r.Params[2], &comment); err != nil {
-			return fmt.Errorf("third optional parameter 'comment' must be a string: %v", err)
+			return fmt.Errorf("third parameter (optional) 'comment' must be a string: %v", err)
 		}
 		optArgs = append(optArgs, comment)
 	}
 	if len(r.Params) > 3 {
 		var commentto string
 		if err := json.Unmarshal(r.Params[3], &commentto); err != nil {
-			return fmt.Errorf("fourth optional parameter 'commentto' must be a string: %v", err)
+			return fmt.Errorf("fourth parameter (optional) 'commentto' must be a string: %v", err)
 		}
 		optArgs = append(optArgs, commentto)
+	}
+	if len(r.Params) > 4 {
+		var txcomment string
+		if err := json.Unmarshal(r.Params[4], &txcomment); err != nil {
+			return fmt.Errorf("fifth parameter (optional) 'txcomment' must be a string: %v", err)
+		}
+		optArgs = append(optArgs, txcomment)
 	}
 
 	newCmd, err := NewSendToAddressCmd(r.Id, address, amount, optArgs...)
