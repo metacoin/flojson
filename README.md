@@ -79,4 +79,5 @@ signature perform the following:
 
 ## License
 
+Package flojson is licensed under the liberal ISC License.
 Package btcjson is licensed under the liberal ISC License.

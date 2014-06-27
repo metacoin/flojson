@@ -3,11 +3,13 @@
 // license that can be found in the LICENSE file.
 
 // this has to be in the real json subpackage so we can mock up structs
-package btcjson
+package flojson
 
 import (
 	"encoding/json"
+
 	"github.com/davecgh/go-spew/spew"
+
 	"reflect"
 	"strings"
 	"testing"
