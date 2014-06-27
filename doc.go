@@ -3,17 +3,19 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package btcjson implements the bitcoin JSON-RPC API.
+Package flojson implements the Florincoin JSON-RPC API.
+This is a fork of btcjson by Conformal.
+Package flojson and btcjson are licensed under the liberal ISC license.
 
-A complete description of the JSON-RPC protocol as used by bitcoin can
-be found on the official wiki at
-https://en.bitcoin.it/wiki/API_reference_%28JSON-RPC%29 with a list of
-all the supported calls at
-https://en.bitcoin.it/wiki/Original_Bitcoin_client/API_Calls_list.
+The original package btcjson is one of the core packages from btcd, an alternative full-node
+implementation of bitcoin which is under active development by Conformal.
+Although it was primarily written for btcd, this package has intentionally been
+designed so it can be used as a standalone package for any projects needing to
+communicate with a bitcoin client using the json rpc interface.
 
 This package provides data structures and code for marshalling and
-unmarshalling json for communicating with a running instance of btcd
-or bitcoind/bitcoin-qt.  It also provides code for sending those
+unmarshalling json for communicating with a running instance of flod
+or florincoind/florincoin-qt.  It also provides code for sending those
 messages.  It does not provide any code for the client to actually deal
 with the messages.  Although it is meant primarily for btcd, it is
 possible to use this code elsewhere for interacting with a bitcoin
@@ -113,4 +115,4 @@ interface so one can access individual items as follows:
 		}
 	}
 */
-package btcjson
+package flojson
