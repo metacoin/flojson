@@ -5630,13 +5630,13 @@ func (cmd *SendToAddressCmd) Method() string {
 
 // MarshalJSON returns the JSON encoding of cmd.  Part of the Cmd interface.
 func (cmd *SendToAddressCmd) MarshalJSON() ([]byte, error) {
-	params := make([]interface{}, 2, 4)
+	params := make([]interface{}, 2, 5)
 	params[0] = cmd.Address
 	params[1] = float64(cmd.Amount) / 1e8 //convert to BTC
-	if cmd.Comment != "" || cmd.CommentTo != "" {
+	if cmd.Comment != "" || cmd.CommentTo != "" || cmd.TxComment != "" {
 		params = append(params, cmd.Comment)
 	}
-	if cmd.CommentTo != "" {
+	if cmd.CommentTo != "" || cmd.TxComment != "" {
 		params = append(params, cmd.CommentTo)
 	}
 	if cmd.TxComment != "" {
