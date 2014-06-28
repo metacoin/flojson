@@ -48,6 +48,10 @@ http://localhost:6060/pkg/github.com/metacoin/flojson
 ## Installation
 
 ```bash
+$ go get github.com/metacoin/flojson
+```
+If you're looking for btcjson, get it from conformal's repo
+```bash
 $ go get github.com/conformal/btcjson
 ```
 
