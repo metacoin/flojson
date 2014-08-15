@@ -6666,7 +6666,7 @@ func (cmd *WalletLockCmd) UnmarshalJSON(b []byte) error {
 type WalletPassphraseCmd struct {
 	id         interface{}
 	Passphrase string
-	Timeout    int64
+	Timeout    int
 }
 
 // Enforce that WalletPassphraseCmd satisifies the Cmd interface.
@@ -6674,7 +6674,7 @@ var _ Cmd = &WalletPassphraseCmd{}
 
 // NewWalletPassphraseCmd creates a new WalletPassphraseCmd. Optionally a
 // pointer to a TemplateRequest may be provided.
-func NewWalletPassphraseCmd(id interface{}, passphrase string, timeout int64) (*WalletPassphraseCmd, error) {
+func NewWalletPassphraseCmd(id interface{}, passphrase string, timeout int) (*WalletPassphraseCmd, error) {
 
 	return &WalletPassphraseCmd{
 		id:         id,
@@ -6726,7 +6726,7 @@ func (cmd *WalletPassphraseCmd) UnmarshalJSON(b []byte) error {
 		return fmt.Errorf("first parameter 'passphrase' must be a string: %v", err)
 	}
 
-	var timeout int64
+	var timeout int
 	if err := json.Unmarshal(r.Params[1], &timeout); err != nil {
 		return fmt.Errorf("second parameter 'timeout' must be an integer: %v", err)
 	}
