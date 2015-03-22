@@ -2102,14 +2102,14 @@ func (cmd *GetBlockCountCmd) UnmarshalJSON(b []byte) error {
 // unmarshaling of getblockhash JSON RPC commands.
 type GetBlockHashCmd struct {
 	id    interface{}
-	Index int64
+	Index int
 }
 
 // Enforce that GetBlockHashCmd satisifies the Cmd interface.
 var _ Cmd = &GetBlockHashCmd{}
 
 // NewGetBlockHashCmd creates a new GetBlockHashCmd.
-func NewGetBlockHashCmd(id interface{}, index int64) (*GetBlockHashCmd, error) {
+func NewGetBlockHashCmd(id interface{}, index int) (*GetBlockHashCmd, error) {
 	return &GetBlockHashCmd{
 		id:    id,
 		Index: index,
@@ -2153,7 +2153,7 @@ func (cmd *GetBlockHashCmd) UnmarshalJSON(b []byte) error {
 		return ErrWrongNumberOfParams
 	}
 
-	var index int64
+	var index int
 	if err := json.Unmarshal(r.Params[0], &index); err != nil {
 		return fmt.Errorf("first parameter 'index' must be an integer: %v", err)
 	}

@@ -321,6 +321,7 @@ type ListTransactionsResult struct {
 	WalletConflicts []string `json:"walletconflicts"`
 	Time            int64    `json:"time"`
 	TimeReceived    int64    `json:"timereceived"`
+	TxComment       string   `json:"tx-comment"`
 	Comment         string   `json:"comment,omitempty"`
 	OtherAccount    string   `json:"otheraccount"`
 }
@@ -390,11 +391,12 @@ type TxRawResult struct {
 
 // TxRawDecodeResult models the data from the decoderawtransaction command.
 type TxRawDecodeResult struct {
-	Txid     string `json:"txid"`
-	Version  uint32 `json:"version"`
-	Locktime uint32 `json:"locktime"`
-	Vin      []Vin  `json:"vin"`
-	Vout     []Vout `json:"vout"`
+	Txid      string `json:"txid"`
+	Version   uint32 `json:"version"`
+	Locktime  uint32 `json:"locktime"`
+	TxComment string `json:"tx-comment"`
+	Vin       []Vin  `json:"vin"`
+	Vout      []Vout `json:"vout"`
 }
 
 // ValidateAddressResult models the data from the validateaddress command.
