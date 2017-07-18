@@ -387,6 +387,7 @@ type TxRawResult struct {
 	Confirmations uint64 `json:"confirmations,omitempty"`
 	Time          int64  `json:"time,omitempty"`
 	Blocktime     int64  `json:"blocktime,omitempty"`
+	TxComment     string `json:"tx-comment"`
 }
 
 // TxRawDecodeResult models the data from the decoderawtransaction command.
