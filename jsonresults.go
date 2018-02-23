@@ -387,7 +387,8 @@ type TxRawResult struct {
 	Confirmations uint64 `json:"confirmations,omitempty"`
 	Time          int64  `json:"time,omitempty"`
 	Blocktime     int64  `json:"blocktime,omitempty"`
-	TxComment     string `json:"tx-comment"`
+	TxComment     string `json:"tx-comment,omitempty"`
+	FloData       string `json:"floData,omitempty"`
 }
 
 // TxRawDecodeResult models the data from the decoderawtransaction command.
@@ -395,7 +396,8 @@ type TxRawDecodeResult struct {
 	Txid      string `json:"txid"`
 	Version   uint32 `json:"version"`
 	Locktime  uint32 `json:"locktime"`
-	TxComment string `json:"tx-comment"`
+	TxComment string `json:"tx-comment,omitempty"`
+	FloData   string `json:"floData,omitempty"`
 	Vin       []Vin  `json:"vin"`
 	Vout      []Vout `json:"vout"`
 }
@@ -533,6 +535,9 @@ func ReadResultCmd(cmd string, message []byte) (Reply, error) {
 			var res *TxRawResult
 			err = json.Unmarshal(objmap["result"], &res)
 			if err == nil {
+				if len(res.TxComment) < len(res.FloData) {
+					res.TxComment = res.FloData
+				}
 				result.Result = res
 			}
 		} else {
@@ -546,6 +551,9 @@ func ReadResultCmd(cmd string, message []byte) (Reply, error) {
 		var res *TxRawDecodeResult
 		err = json.Unmarshal(objmap["result"], &res)
 		if err == nil {
+			if len(res.TxComment) < len(res.FloData) {
+				res.TxComment = res.FloData
+			}
 			result.Result = res
 		}
 	case "getaddressesbyaccount":
