@@ -5630,25 +5630,37 @@ func (cmd *SendToAddressCmd) Method() string {
 
 // MarshalJSON returns the JSON encoding of cmd.  Part of the Cmd interface.
 func (cmd *SendToAddressCmd) MarshalJSON() ([]byte, error) {
-	params := make([]interface{}, 2, 5)
-	params[0] = cmd.Address
-	params[1] = float64(cmd.Amount) / 1e8 //convert to BTC
-	if cmd.Comment != "" || cmd.CommentTo != "" || cmd.TxComment != "" {
-		params = append(params, cmd.Comment)
-	}
-	if cmd.CommentTo != "" || cmd.TxComment != "" {
-		params = append(params, cmd.CommentTo)
-	}
-	if cmd.TxComment != "" {
-		params = append(params, cmd.TxComment)
+	type sendToAddressInternal struct {
+		id        interface{}
+		Address   string  `json:"address,omitempty"`
+		Amount    float64 `json:"amount,omitempty"`
+		Comment   string  `json:"comment,omitempty"`
+		CommentTo string  `json:"comment_to,omitempty"`
+		FloData   string  `json:"floData,omitempty"`
 	}
 
-	// Fill and marshal a RawCmd.
-	raw, err := NewRawCmd(cmd.id, cmd.Method(), params)
-	if err != nil {
-		return nil, err
+	var stai sendToAddressInternal
+	stai.Address = cmd.Address
+	stai.Amount = float64(cmd.Amount) / 1e8 //convert to FLO
+	stai.Comment = cmd.Comment
+	stai.CommentTo = cmd.CommentTo
+	stai.FloData = cmd.TxComment
+
+	type rawCmdInternal struct {
+		Jsonrpc string                `json:"jsonrpc"`
+		Id      interface{}           `json:"id"`
+		Method  string                `json:"method"`
+		Params  sendToAddressInternal `json:"params"`
 	}
-	return json.Marshal(raw)
+
+	raw := &rawCmdInternal{
+		Jsonrpc: "1.0",
+		Id:      cmd.id,
+		Method:  cmd.Method(),
+		Params:  stai,
+	}
+	b, e := json.Marshal(raw)
+	return b, e
 }
 
 // UnmarshalJSON unmarshals the JSON encoding of cmd into cmd.  Part of
